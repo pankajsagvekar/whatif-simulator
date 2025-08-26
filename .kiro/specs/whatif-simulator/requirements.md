@@ -46,6 +46,23 @@ The AI What If Simulator is a feature that takes user-provided "What if..." ques
 2. WHEN presenting the results THEN the system SHALL format the output in a readable, organized manner
 3. WHEN displaying results THEN the system SHALL ensure both versions are easily scannable and comparable
 
+### Requirement 6
+
+**User Story:** As a user, I want an engaging split-screen interface with animations and interactivity, so that I can have a delightful and entertaining experience while exploring scenarios.
+
+#### Acceptance Criteria
+
+1. WHEN the interface loads THEN the system SHALL display a split-screen layout with left panel for serious outcomes and right panel for fun outcomes
+2. WHEN results are generated THEN the serious panel SHALL slide in with a calm fade and professional styling
+3. WHEN results are generated THEN the fun panel SHALL animate in with playful effects like spinning or wiggling
+4. WHEN hovering over panels THEN the system SHALL provide parallax tilt effects for enhanced interactivity
+5. WHEN fun results load THEN the system SHALL display emoji confetti or similar celebratory animations
+6. WHEN users interact with the input box THEN the system SHALL show animated placeholder text like "What if I skipped gym today?"
+7. WHEN users hover over the submit button THEN the system SHALL provide bounce animation feedback
+8. WHEN users click submit THEN the button SHALL explode into confetti before processing begins
+9. WHEN the system is processing THEN the system SHALL display engaging loading animations like thinking emoji or typing robot
+10. WHEN users toggle dark/light mode THEN the system SHALL provide smooth sun-moon morphing animation
+
 ### Requirement 5
 
 **User Story:** As a user, I want the system to handle various types of scenarios, so that I can explore different kinds of "What if..." questions.
@@ -55,3 +72,15 @@ The AI What If Simulator is a feature that takes user-provided "What if..." ques
 1. WHEN processing scenarios THEN the system SHALL handle personal, professional, historical, and hypothetical situations
 2. WHEN encountering complex scenarios THEN the system SHALL break down the analysis into logical components
 3. IF a scenario is too vague THEN the system SHALL request clarification while still attempting to provide meaningful output
+
+### Requirement 7
+
+**User Story:** As a user, I want the interface to clearly communicate the duality between serious and fun outcomes, so that I understand the contrasting personalities and can be entertained while learning.
+
+#### Acceptance Criteria
+
+1. WHEN the interface is displayed THEN the system SHALL use distinct visual styling that emphasizes the serious vs fun duality
+2. WHEN serious outcomes are shown THEN the system SHALL use professional colors, calm animations, and glowing borders
+3. WHEN fun outcomes are shown THEN the system SHALL use vibrant colors, playful animations, and dynamic backgrounds
+4. WHEN users interact with the interface THEN the system SHALL maintain the personality distinction through all animations and feedback
+5. WHEN judges or users interact with the system THEN the system SHALL be engaging enough to make them laugh while providing value

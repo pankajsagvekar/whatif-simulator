@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DemoAIService = void 0;
 exports.runDemo = runDemo;
-const WhatIfSimulator_js_1 = require("./services/WhatIfSimulator.js");
+const WhatIfSimulatorApp_1 = require("./WhatIfSimulatorApp");
+const config_1 = require("./config");
 /**
  * Demo AI Service implementation for testing the WhatIfSimulator
  * In a real application, this would integrate with actual AI services like OpenAI, Anthropic, etc.
@@ -229,17 +230,25 @@ Eventually, society would adapt by developing "mental etiquette" classes in scho
 }
 exports.DemoAIService = DemoAIService;
 /**
- * Demo function showing how to use the WhatIfSimulator
+ * Demo function showing how to use the integrated WhatIfSimulatorApp
  */
 async function runDemo() {
-    console.log('🎭 What If Simulator Demo\n');
-    // Create AI service and simulator
+    console.log('🎭 What If Simulator Demo - Integrated Application\n');
+    // Create AI service and integrated application
     const aiService = new DemoAIService();
-    const simulator = new WhatIfSimulator_js_1.WhatIfSimulator(aiService, {
-        enableLogging: true,
-        enableMetrics: true,
-        enableParallelGeneration: true
-    });
+    const config = (0, config_1.getConfigForEnvironment)('development');
+    const app = await (0, WhatIfSimulatorApp_1.createWhatIfSimulatorApp)(aiService, config);
+    console.log('✅ Application initialized successfully');
+    console.log('📊 Health Status:', JSON.stringify(app.getHealthStatus(), null, 2));
+    console.log('\n🧪 Running integration test...');
+    const testResult = await app.runIntegrationTest();
+    if (testResult.success) {
+        console.log('✅ All integration tests passed!');
+    }
+    else {
+        console.log('⚠️  Some integration tests failed:', testResult.errors);
+    }
+    console.log('\n🎯 Processing demo scenarios...\n');
     // Demo scenarios
     const scenarios = [
         "What if everyone could read minds?",
@@ -252,7 +261,7 @@ async function runDemo() {
         console.log(`🤔 Scenario: ${scenario}`);
         console.log(`${'='.repeat(60)}\n`);
         try {
-            const result = await simulator.processScenario(scenario);
+            const result = await app.processScenario(scenario);
             if (result.success) {
                 console.log(result.presentationOutput);
                 if (result.metrics) {
@@ -279,6 +288,9 @@ async function runDemo() {
     console.log(`\n${'='.repeat(60)}`);
     console.log('✨ Demo completed! Thanks for exploring the What If Simulator!');
     console.log(`${'='.repeat(60)}\n`);
+    // Gracefully shutdown the application
+    await app.shutdown();
+    console.log('👋 Application shut down gracefully');
 }
 // Run the demo if this file is executed directly
 // Check if this module is being run directly (not imported)

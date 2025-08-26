@@ -14,15 +14,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WhatIfSimulatorApp = void 0;
-// Main entry point for the What If Simulator
-__exportStar(require("./models"), exports);
-__exportStar(require("./services"), exports);
-__exportStar(require("./utils"), exports);
-__exportStar(require("./api"), exports);
-__exportStar(require("./cli"), exports);
-__exportStar(require("./web"), exports);
-// Main integration and configuration
-var WhatIfSimulatorApp_js_1 = require("./WhatIfSimulatorApp.js");
-Object.defineProperty(exports, "WhatIfSimulatorApp", { enumerable: true, get: function () { return WhatIfSimulatorApp_js_1.WhatIfSimulatorApp; } });
+__exportStar(require("./WhatIfAPI.js"), exports);
 //# sourceMappingURL=index.js.map
