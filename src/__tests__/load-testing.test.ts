@@ -77,9 +77,9 @@ describe('Load Testing and Concurrent User Scenarios', () => {
   beforeEach(() => {
     aiService = new LoadTestAIService();
     aiService.reset();
-    simulator = new WhatIfSimulator(aiService, { 
+    simulator = new WhatIfSimulator(aiService, {
       enableLogging: false,
-      enableParallelGeneration: true 
+      enableParallelGeneration: true
     });
   });
 
@@ -112,7 +112,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
 
     it('should handle high concurrency load', async () => {
       const concurrentRequests = 20;
-      const scenarios = Array.from({ length: concurrentRequests }, (_, i) => 
+      const scenarios = Array.from({ length: concurrentRequests }, (_, i) =>
         `What if scenario number ${i + 1} happened?`
       );
 
@@ -139,7 +139,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
       const results: any[] = [];
 
       for (let burst = 0; burst < bursts; burst++) {
-        const burstScenarios = Array.from({ length: burstSize }, (_, i) => 
+        const burstScenarios = Array.from({ length: burstSize }, (_, i) =>
           `What if burst ${burst + 1} scenario ${i + 1} occurred?`
         );
 
@@ -151,7 +151,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
 
-      const successful = results.filter(result => 
+      const successful = results.filter(result =>
         result.status === 'fulfilled' && result.value.success
       ).length;
 
@@ -162,7 +162,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
 
   describe('Performance Under Load', () => {
     it('should maintain response times under moderate load', async () => {
-      const scenarios = Array.from({ length: 10 }, (_, i) => 
+      const scenarios = Array.from({ length: 10 }, (_, i) =>
         `What if performance test scenario ${i + 1} happened?`
       );
 
@@ -176,10 +176,10 @@ describe('Load Testing and Concurrent User Scenarios', () => {
       });
 
       // Average response time should be reasonable
-      const avgResponseTime = results.reduce((sum, result) => 
+      const avgResponseTime = results.reduce((sum, result) =>
         sum + result.metrics!.totalProcessingTime, 0
       ) / results.length;
-      
+
       expect(avgResponseTime).toBeLessThan(1000); // Average under 1 second
     });
 
@@ -210,7 +210,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
     it('should handle AI service failures gracefully', async () => {
       aiService.setFailureRate(0.3); // 30% failure rate
 
-      const scenarios = Array.from({ length: 15 }, (_, i) => 
+      const scenarios = Array.from({ length: 15 }, (_, i) =>
         `What if failure test scenario ${i + 1} occurred?`
       );
 
@@ -236,9 +236,9 @@ describe('Load Testing and Concurrent User Scenarios', () => {
   describe('Resource Management', () => {
     it('should handle memory efficiently with many requests', async () => {
       const initialMemory = process.memoryUsage().heapUsed;
-      
+
       // Process many scenarios
-      const scenarios = Array.from({ length: 50 }, (_, i) => 
+      const scenarios = Array.from({ length: 50 }, (_, i) =>
         `What if memory test scenario ${i + 1} happened?`
       );
 
@@ -248,7 +248,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
         const batch = scenarios.slice(i, i + batchSize);
         const batchPromises = batch.map(scenario => simulator.processScenario(scenario));
         await Promise.all(batchPromises);
-        
+
         // Force garbage collection if available
         if (global.gc) {
           global.gc();
@@ -257,7 +257,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
 
       const finalMemory = process.memoryUsage().heapUsed;
       const memoryIncrease = finalMemory - initialMemory;
-      
+
       // Memory increase should be reasonable (less than 100MB for 50 requests)
       expect(memoryIncrease).toBeLessThan(100 * 1024 * 1024);
     });
@@ -265,7 +265,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
     it('should handle rate limiting appropriately', async () => {
       aiService.setMaxConcurrentRequests(3); // Limit concurrent requests
 
-      const scenarios = Array.from({ length: 10 }, (_, i) => 
+      const scenarios = Array.from({ length: 10 }, (_, i) =>
         `What if rate limit test ${i + 1} occurred?`
       );
 
@@ -274,12 +274,12 @@ describe('Load Testing and Concurrent User Scenarios', () => {
       );
 
       // Some requests should succeed, some might fail due to rate limiting
-      const successful = results.filter(result => 
+      const successful = results.filter(result =>
         result.status === 'fulfilled' && result.value.success
       ).length;
-      
-      const rateLimited = results.filter(result => 
-        result.status === 'fulfilled' && !result.value.success && 
+
+      const rateLimited = results.filter(result =>
+        result.status === 'fulfilled' && !result.value.success &&
         result.value.error?.includes('rate limit')
       ).length;
 
@@ -289,7 +289,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
 
     it('should clean up resources properly after requests', async () => {
       const scenario = "What if cleanup test occurred?";
-      
+
       // Process multiple requests sequentially
       for (let i = 0; i < 10; i++) {
         const result = await simulator.processScenario(scenario);
@@ -313,39 +313,39 @@ describe('Load Testing and Concurrent User Scenarios', () => {
         const scenario = `What if stress test request ${++requestCount} happened?`;
         const promise = simulator.processScenario(scenario);
         results.push(promise);
-        
+
         // Small delay to prevent overwhelming
         await new Promise(resolve => setTimeout(resolve, 50));
       }
 
       // Wait for all requests to complete
       const finalResults = await Promise.allSettled(results);
-      
-      const successful = finalResults.filter(result => 
+
+      const successful = finalResults.filter(result =>
         result.status === 'fulfilled' && result.value.success
       ).length;
 
       // Should maintain reasonable success rate under stress
       expect(successful).toBeGreaterThan(finalResults.length * 0.5); // At least 50% success
       expect(requestCount).toBeGreaterThan(10); // Should have processed multiple requests
-      
+
       console.log(`Stress test: ${successful}/${finalResults.length} successful over ${testDuration}ms`);
     });
 
     it('should handle mixed load patterns', async () => {
       // Mix of quick and slow requests
-      const quickScenarios = Array.from({ length: 5 }, (_, i) => 
+      const quickScenarios = Array.from({ length: 5 }, (_, i) =>
         `What if quick scenario ${i + 1} happened?`
       );
-      
+
       aiService.setResponseDelay(200); // Slower for some requests
-      const slowScenarios = Array.from({ length: 3 }, (_, i) => 
+      const slowScenarios = Array.from({ length: 3 }, (_, i) =>
         `What if slow scenario ${i + 1} happened?`
       );
 
       // Start slow requests first
       const slowPromises = slowScenarios.map(scenario => simulator.processScenario(scenario));
-      
+
       // Then start quick requests
       aiService.setResponseDelay(50);
       const quickPromises = quickScenarios.map(scenario => simulator.processScenario(scenario));
@@ -358,7 +358,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
 
       // Quick requests should generally complete faster
       const quickResults = allResults.slice(-quickScenarios.length);
-      const avgQuickTime = quickResults.reduce((sum, result) => 
+      const avgQuickTime = quickResults.reduce((sum, result) =>
         sum + result.metrics!.totalProcessingTime, 0
       ) / quickResults.length;
 
@@ -370,8 +370,8 @@ describe('Load Testing and Concurrent User Scenarios', () => {
     it('should recover from temporary AI service outages', async () => {
       // Start with high failure rate
       aiService.setFailureRate(0.8);
-      
-      const scenarios = Array.from({ length: 5 }, (_, i) => 
+
+      const scenarios = Array.from({ length: 5 }, (_, i) =>
         `What if recovery test ${i + 1} happened?`
       );
 
@@ -399,7 +399,7 @@ describe('Load Testing and Concurrent User Scenarios', () => {
     it('should maintain service during partial failures', async () => {
       aiService.setFailureRate(0.4); // Moderate failure rate
 
-      const scenarios = Array.from({ length: 20 }, (_, i) => 
+      const scenarios = Array.from({ length: 20 }, (_, i) =>
         `What if partial failure test ${i + 1} happened?`
       );
 

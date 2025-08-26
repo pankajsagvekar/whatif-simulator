@@ -47,7 +47,7 @@ describe('OutputFormatter', () => {
       ];
 
       scenarios.forEach(scenario => {
-        const result = formatter.formatResults('test serious', 'test fun', scenario, 1000);
+        const result = formatter.formatResults('test serious outcome', 'test fun outcome', scenario, 1000);
         expect(result.metadata.scenarioType).toBe(scenario.scenarioType);
       });
     });
@@ -156,7 +156,7 @@ describe('OutputFormatter', () => {
     it('should apply consistent formatting to serious outcomes', () => {
       const seriousWithKeywords = 'Therefore, this is important. However, we must consider. Additionally, there are factors.';
       
-      const result = formatter.formatResults(seriousWithKeywords, 'fun test', mockScenario, 1000);
+      const result = formatter.formatResults(seriousWithKeywords, 'fun test outcome', mockScenario, 1000);
       
       expect(result.seriousVersion).toContain('**Therefore**');
       expect(result.seriousVersion).toContain('**However**');
@@ -176,7 +176,7 @@ describe('OutputFormatter', () => {
     it('should normalize bullet points consistently', () => {
       const mixedBullets = '- First point\n* Second point\n  - Third point';
       
-      const result = formatter.formatResults('serious', mixedBullets, mockScenario, 1000);
+      const result = formatter.formatResults('serious outcome', mixedBullets, mockScenario, 1000);
       
       const bulletCount = (result.funVersion.match(/• /g) || []).length;
       expect(bulletCount).toBe(3); // All bullets normalized
@@ -219,14 +219,14 @@ describe('OutputFormatter', () => {
     });
 
     it('should handle zero processing time', () => {
-      const result = formatter.formatResults('serious', 'fun', mockScenario, 0);
+      const result = formatter.formatResults('serious outcome', 'fun outcome', mockScenario, 0);
       const presentation = formatter.createPresentationOutput(result);
       
       expect(presentation).toContain('Generated in 0ms');
     });
 
     it('should handle very high processing times', () => {
-      const result = formatter.formatResults('serious', 'fun', mockScenario, 999999);
+      const result = formatter.formatResults('serious outcome', 'fun outcome', mockScenario, 999999);
       const presentation = formatter.createPresentationOutput(result);
       
       expect(presentation).toContain('Generated in 999999ms');

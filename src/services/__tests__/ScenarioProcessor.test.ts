@@ -228,12 +228,7 @@ describe('ScenarioProcessor', () => {
 
   describe('edge cases', () => {
     it('should handle empty strings gracefully', () => {
-      const result = processor.processScenario("");
-      
-      expect(result.originalText).toBe("");
-      expect(result.scenarioType).toBe('hypothetical');
-      expect(result.keyElements.actors.length).toBeGreaterThan(0);
-      expect(result.complexity).toBe('simple');
+      expect(() => processor.processScenario("")).toThrow('Invalid scenario input provided');
     });
 
     it('should handle very short scenarios', () => {
